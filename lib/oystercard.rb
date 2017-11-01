@@ -1,13 +1,15 @@
 class Oystercard
 # Oystercards objects
 # attribute readers: they are methods, they return the instance variable that they share the name with
-  attr_reader :balance , :entry_station
+  attr_reader :balance , :entry_station, :exit_station, :journeys
   CREDIT_LIMIT = 120
   MINIMUM_FARE = 1
 
   def initialize(balance = 0)
     @balance = balance
     @entry_station = nil
+    @exit_station = nil
+    @journeys = []
   end
 
   # def balance
@@ -29,8 +31,11 @@ class Oystercard
     @entry_station=station_placeholder
   end
 
-  def touch_out
+  def touch_out(exit_placeholder)
     deduct(MINIMUM_FARE)
+    @exit_station = exit_placeholder
+    journey = {entry: @entry_station, exit: @exit_station}
+    @journeys << journey
     @entry_station = nil
   end
 

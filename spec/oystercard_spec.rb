@@ -3,10 +3,15 @@ require 'oystercard'
 describe Oystercard do
   subject(:oystercard) { described_class.new }
   let(:station) { double(:station)}
+  let(:exit_station) {double(:exit_station)}
+  # this double is something I might put into the touch_out method argument
 
   describe 'initialize' do
     it 'Check if oystercard has a balance equal to 0' do
       expect(subject.balance).to eq(0)
+    end
+    it 'checks that the card has no journeys by default' do
+      expect(subject.journeys).to eq []
     end
   end
 
@@ -28,25 +33,31 @@ describe Oystercard do
 
   describe 'touch_out' do
     it "raises an error when insufficient balance" do
-      expect { subject.touch_out }.to raise_error "Not enough money for the journey"
+      expect { subject.touch_out(exit_station)}.to raise_error "Not enough money for the journey"
     end
     it 'changes status after touching out' do
       minimum_bal = Oystercard::MINIMUM_FARE
       card=Oystercard.new(minimum_bal)
       card.touch_in(station)
-      card.touch_out
+      card.touch_out(exit_station)
       expect(card.in_journey?).to eq false
     end
     it 'reduces the balance of the card by minimum fare' do
       subject.top_up(6)
       subject.touch_in(station)
-      expect { subject.touch_out}.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      expect { subject.touch_out(exit_station)}.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
     end
     it 'forgets the entry station on touch out' do
       subject.top_up(6)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject.entry_station).to eq nil
+    end
+    it 'saves the exit station' do
+      subject.top_up(6)
+      subject.touch_in(station)
+      subject.touch_out(exit_station)
+      expect(subject.exit_station).to eq exit_station
     end
   end
 
