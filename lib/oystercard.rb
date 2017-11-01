@@ -1,33 +1,41 @@
 class Oystercard
 # Oystercards objects
-  attr_reader :balance, :limit, :in_journey
-  CREDIT_LIMIT=120
-  MINIMUM_BALANCE=1
+# attribute readers: they are methods, they return the instance variable that they share the name with
+  attr_reader :balance , :entry_station
+  CREDIT_LIMIT = 120
+  MINIMUM_FARE = 1
 
-  def initialize(balance = 0,limit=CREDIT_LIMIT)
-    @in_journey=false
-    @balance = 0
-    @limit=limit
-    top_up(balance)
+  def initialize(balance = 0)
+    @balance = balance
+    @entry_station = nil
   end
 
+  # def balance
+  #   @balance
+  # end
+
+  # def in_journey
+  #   @in_journey
+  # end
+
   def top_up(amount)
-    raise RuntimeError, "amount above #{CREDIT_LIMIT}" if overloads?(amount)
+    raise "amount above #{CREDIT_LIMIT}" if overloads?(amount)
     @balance += amount
   end
 
-  def deduct(fare)
-    raise RuntimeError, "Not enough money for the journey" if insufficient_money?(fare)
-    @balance -= fare
-  end
 
-  def touch_in
-    raise RuntimeError, "Balance less than the minimum fare" if insufficient_balance?
-    @in_journey=true
+  def touch_in(station_placeholder)
+    raise "Balance less than the minimum fare" if insufficient_balance?
+    @entry_station=station_placeholder
   end
 
   def touch_out
-    @in_journey=false
+    deduct(MINIMUM_FARE)
+    @entry_station = nil
+  end
+
+  def in_journey?
+    !@entry_station.nil?
   end
 
 private
@@ -41,7 +49,12 @@ private
   end
 
   def insufficient_balance?
-    @balance < MINIMUM_BALANCE
+    @balance < MINIMUM_FARE
+  end
+
+  def deduct(fare)
+    raise "Not enough money for the journey" if insufficient_money?(fare)
+    @balance -= fare
   end
 
 end
