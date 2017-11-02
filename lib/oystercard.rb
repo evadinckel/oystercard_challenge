@@ -13,14 +13,6 @@ class Oystercard
     @journey = journey
   end
 
-  # def balance
-  #   @balance
-  # end
-
-  # def in_journey
-  #   @in_journey
-  # end
-
   def top_up(amount)
     raise "amount above #{CREDIT_LIMIT}" if overloads?(amount)
     @balance += amount
@@ -32,12 +24,13 @@ class Oystercard
   end
 
   def touch_out(exit_placeholder)
-    deduct(MINIMUM_FARE)
-    # @exit_station = exit_placeholder
-    journey = {entry: @entry_station, exit: @exit_station}
-    @journeys << journey
-
+    deduct
+    journey.exit_station(station_placeholder)
+    @journeys << journey.current
+    # journey.complete
   end
+
+
 
 
 private
@@ -54,9 +47,8 @@ private
     @balance < MINIMUM_FARE
   end
 
-  def deduct(fare)
-    raise "Not enough money for the journey" if insufficient_money?(fare)
-    @balance -= fare
+  def deduct
+    @balance -= MINIMUM_FARE
   end
 
 end

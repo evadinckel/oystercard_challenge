@@ -10,7 +10,16 @@ def entry_station(station)
   @entry_station = station
 end
 
-def get_station
-  @entry_station
+def exit_station(station)
+  @exit_station = station
+end
+
+def current
+  { entry: @entry_station , exit: @exit_station }
+end
+
+def complete
+  @entry_station = nil
+  @exit_station = nil
 end
 end
