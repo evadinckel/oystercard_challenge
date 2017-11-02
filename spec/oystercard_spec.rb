@@ -1,5 +1,6 @@
 require 'oystercard'
 
+
 describe Oystercard do
   subject(:oystercard) { described_class.new }
   let(:station) {double(:station)}
@@ -34,7 +35,7 @@ describe Oystercard do
 
   describe 'touch_out' do
     it "raises an error when insufficient balance" do
-      expect { subject.touch_out(exit_station)}.to raise_error "Not enough money for the journey"
+      expect { subject.touch_out(exit_station) }.to raise_error "Not enough money for the journey"
     end
     it 'changes status after touching out' do
       minimum_bal = Oystercard::MINIMUM_FARE
@@ -86,8 +87,8 @@ end
     end
     it 'remembers the entry station after touch in' do
       subject.top_up(10)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(station_placeholder)
+      expect(journey.entry_station).to eq station_placeholder
     end
   end
 end

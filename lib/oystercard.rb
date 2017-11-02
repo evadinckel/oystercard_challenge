@@ -1,14 +1,14 @@
+require_relative "journey.rb"
+#or require './lib/journey'
 class Oystercard
 # Oystercards objects
 # attribute readers: they are methods, they return the instance variable that they share the name with
-  attr_reader :balance, :entry_station, :exit_station, :journeys
+  attr_reader :balance, :journeys
   CREDIT_LIMIT = 120
   MINIMUM_FARE = 1
 
-  def initialize(balance = 0)
+  def initialize(balance = 0, journey = Journey.new)
     @balance = balance
-    @entry_station = nil
-    @exit_station = nil
     @journeys = []
   end
 
@@ -28,7 +28,8 @@ class Oystercard
 
   def touch_in(station_placeholder)
     raise "Balance less than the minimum fare" if insufficient_balance?
-    @entry_station=station_placeholder
+    #@entry_station=station_placeholder
+    journey.entry_station(station_placeholder)
   end
 
   def touch_out(exit_placeholder)
