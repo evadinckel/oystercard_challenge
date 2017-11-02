@@ -2,8 +2,9 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) { described_class.new }
-  let(:station) { double(:station)}
+  let(:station) {double(:station)}
   let(:exit_station) {double(:exit_station)}
+  let(:card_with_money) { described_class.new(20)}
   # this double is something I might put into the touch_out method argument
 
   describe 'initialize' do
@@ -43,9 +44,8 @@ describe Oystercard do
       expect(card.in_journey?).to eq false
     end
     it 'reduces the balance of the card by minimum fare' do
-      subject.top_up(6)
-      subject.touch_in(station)
-      expect { subject.touch_out(exit_station)}.to change{ subject.balance }.by(-Oystercard::MINIMUM_FARE)
+      card_with_money.touch_in(station)
+      expect { card_with_money.touch_out(exit_station)}.to change{card_with_money.balance}.by(-Oystercard::MINIMUM_FARE)
     end
     it 'forgets the entry station on touch out' do
       subject.top_up(6)
@@ -59,7 +59,12 @@ describe Oystercard do
       subject.touch_out(exit_station)
       expect(subject.exit_station).to eq exit_station
     end
+    it 'saves journey history' do
+      card_with_money.touch_in(station)
+      expect { card_with_money.touch_out(exit_station) }.to change{ card_with_money.journeys.length }.by 1
+      #change the length of the array by one object after the journeys have added
   end
+end
 
   describe 'journey status' do
     it 'initial status not in journey' do

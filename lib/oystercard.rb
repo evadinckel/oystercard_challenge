@@ -1,7 +1,7 @@
 class Oystercard
 # Oystercards objects
 # attribute readers: they are methods, they return the instance variable that they share the name with
-  attr_reader :balance , :entry_station, :exit_station, :journeys
+  attr_reader :balance, :entry_station, :exit_station, :journeys
   CREDIT_LIMIT = 120
   MINIMUM_FARE = 1
 
