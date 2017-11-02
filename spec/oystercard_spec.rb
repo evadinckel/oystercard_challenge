@@ -87,8 +87,8 @@ end
     end
     it 'remembers the entry station after touch in' do
       subject.top_up(10)
-      subject.touch_in(station_placeholder)
-      expect(journey.entry_station).to eq station_placeholder
+      subject.touch_in(station)
+      expect(subject.journey.get_station).to eq(station)
     end
   end
 end
