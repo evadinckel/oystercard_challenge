@@ -25,7 +25,7 @@ class Oystercard
 
   def touch_out(exit_placeholder)
     deduct
-    journey.exit_station(station_placeholder)
+    journey.exit_station(exit_placeholder)
     @journeys << journey.current
     # journey.complete
   end

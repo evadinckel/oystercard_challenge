@@ -6,11 +6,11 @@ def initialize
   @exit_station = nil
 end
 
-def entry_station(station)
+def entry(station)
   @entry_station = station
 end
 
-def exit_station(station)
+def exit(station)
   @exit_station = station
 end
 
