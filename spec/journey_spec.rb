@@ -1,26 +1,42 @@
 require 'journey'
 
 describe Journey do
+  let(:journey){Journey.new}
+  let(:station) {double (:station)}
 
- it 'test default value' do
-   journey =Journey.new
-   expect(journey.entry_station).to eq(nil)
+  it 'test default value' do
+    expect(journey.entry_station).to eq(nil)
 
- end
+  end
 
- it 'test entry station' do
-   journey = Journey.new
-   journey.entry('station')
-   expect(journey.entry_station).to eq('station')
- end
+  it 'test entry station' do
+    journey.entry(station)
+    expect(journey.entry_station).to eq(station)
+  end
 
+  it 'test exit station' do
+    journey.exit(station)
+    expect(journey.exit_station).to eq (station)
+  end
+
+  it 'records the journey history' do
+    journey.entry(station)
+    journey.exit(station)
+    expect(journey.current).to eq ({entry: station, exit: station})
+  end
+
+  it 'resets the entry station' do
+    journey.entry(station)
+    journey.exit(station)
+    journey.complete
+    expect(journey.entry_station).to eq(nil)
+  end
+
+  it 'resets the exit station' do
+    journey.entry(station)
+    journey.exit(station)
+    journey.complete
+    expect(journey.exit_station).to eq(nil)
+  end
 
 end
-
-# it 'changes status after touching out' do
-#   minimum_bal = Oystercard::MINIMUM_FARE
-#   card=Oystercard.new(minimum_bal)
-#   card.touch_in(station)
-#   card.touch_out(exit_station)
-#   expect(card.in_journey?).to eq false
-# end
